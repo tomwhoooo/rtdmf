@@ -1,4 +1,4 @@
-# Deep Matrix Factorization (DMF) Implementation
+# Residual Thresholded Deep Matrix Factorization (RT-DMF) Implementation
 
 This repository contains an implementation of RT-DMF and CSV data support.
 
