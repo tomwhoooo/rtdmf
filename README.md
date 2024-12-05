@@ -73,7 +73,7 @@ You may take a look at our sample shell scripts for more examples.
 
 ## Using with CSV Data
 
-If you have a CSV file, use the helper script (`prepare_csv_dmf.py`) to prepare your data - converting it to the numpy format used by RT-DMF.
+If you have a CSV file, use the helper script (`csv_helper.py`) to prepare your data - converting it to the numpy format used by RT-DMF.
 
 ### 1. Prepare Your CSV Data
 
@@ -88,10 +88,11 @@ Your CSV should:
 Basic usage:
 
 ```bash
-python prepare_csv_dmf.py --csv-path your_data.csv
+python csv_helper.py \
+    --csv-path your_data.csv
 ```
 
- (For people who prepare their data in non-standard ways, you can specify custom NA values.) If you want to use  custom NA values:
+For people who prepare their data in non-standard ways (such as certain industrial data formats), you can specify custom NA values. If you want to use custom NA values:
 
 ```bash
 python prepare_csv_dmf.py \
@@ -107,6 +108,8 @@ After preparing your CSV, run DMF using the command provided by the helper scrip
 ## Output Files and Monitoring
 
 ### Directory Structure
+
+Your directory will look like something like this (here we assume the output directory is `synthetic_real_data_v4_[filename]`):
 
 ```
 synthetic_real_data_v4_[filename]/
