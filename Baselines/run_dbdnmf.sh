@@ -1,0 +1,12 @@
+PYTHONPATH=. python run_dbdnmf.py --alpha 0.01 --p 0.0
+PYTHONPATH=. python run_dbdnmf.py --alpha 0.1 --p 0.0
+PYTHONPATH=. python run_dbdnmf.py --alpha 0.2 --p 0.0
+PYTHONPATH=. python run_dbdnmf.py --alpha 0.3 --p 0.0
+PYTHONPATH=. python run_dbdnmf.py --alpha 0.01 --p 0.01
+PYTHONPATH=. python run_dbdnmf.py --alpha 0.1 --p 0.01
+PYTHONPATH=. python run_dbdnmf.py --alpha 0.2 --p 0.01
+PYTHONPATH=. python run_dbdnmf.py --alpha 0.3 --p 0.01
+PYTHONPATH=. python run_dbdnmf.py --alpha 0.01 --p 0.005
+PYTHONPATH=. python run_dbdnmf.py --alpha 0.1 --p 0.005
+PYTHONPATH=. python run_dbdnmf.py --alpha 0.2 --p 0.005
+PYTHONPATH=. python run_dbdnmf.py --alpha 0.3 --p 0.005
