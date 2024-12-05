@@ -25,7 +25,7 @@ args = parser.parse_args()
 class DBDNMF(nn.Module):
     def __init__(self, input_dim, hidden_dim, rank):
         super(DBDNMF, self).__init__()
-        # Neural Network part
+        # Neural Network part, since the authors didn't specify the architecture, we used a simple 3-layer NN
         self.nn = nn.Sequential(
             nn.Linear(input_dim, hidden_dim),
             nn.ReLU(),
@@ -71,20 +71,16 @@ def main():
     losses = []
     identity = torch.eye(input_dim).cuda()
     
-    print("Starting training...")
+    print("Training start...")
     for epoch in range(args.epochs):
-        # Forward pass
         output = model(identity)
         
-        # Calculate loss only on non-missing values
         loss = criterion(output * Mask_tensor, M_tensor * Mask_tensor)
         
-        # Backward pass and optimize
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
         
-        # Log progress
         if (epoch + 1) % 100 == 0:
             print(f'Epoch [{epoch+1}/{args.epochs}], Loss: {loss.item():.4f}')
         losses.append(loss.item())
