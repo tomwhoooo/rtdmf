@@ -145,4 +145,4 @@ The `Baselines` directory contains the code for the baselines used in the paper.
    - Reduce learning rate
    - Monitor gradient values
 
-For more detailed information or issues, please refer to the documentation or create an issue in the repository.
+For more detailed information or issues, please refer to the paper or create an issue in the repository.
