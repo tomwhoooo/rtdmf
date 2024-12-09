@@ -1,12 +1,14 @@
-PYTHONPATH=. python run_dbdnmf.py --alpha 0.01 --p 0.0
-PYTHONPATH=. python run_dbdnmf.py --alpha 0.1 --p 0.0
-PYTHONPATH=. python run_dbdnmf.py --alpha 0.2 --p 0.0
-PYTHONPATH=. python run_dbdnmf.py --alpha 0.3 --p 0.0
-PYTHONPATH=. python run_dbdnmf.py --alpha 0.01 --p 0.01
-PYTHONPATH=. python run_dbdnmf.py --alpha 0.1 --p 0.01
-PYTHONPATH=. python run_dbdnmf.py --alpha 0.2 --p 0.01
-PYTHONPATH=. python run_dbdnmf.py --alpha 0.3 --p 0.01
-PYTHONPATH=. python run_dbdnmf.py --alpha 0.01 --p 0.005
-PYTHONPATH=. python run_dbdnmf.py --alpha 0.1 --p 0.005
-PYTHONPATH=. python run_dbdnmf.py --alpha 0.2 --p 0.005
-PYTHONPATH=. python run_dbdnmf.py --alpha 0.3 --p 0.005
+PYTHONPATH=. CUDA_VISIBLE_DEVICES=1 python run_sbdf_cpu.py --file-dir synthetic_data_realdata --file-name B20_noise0.05_FIMMnoise0.02 \
+    --hidden-dim 500 --rank 20 --alpha 0.5 --lr 0.001 --seed 1111
+
+PYTHONPATH=. CUDA_VISIBLE_DEVICES=1 python run_sbdf_cpu.py --file-dir synthetic_data_realdata --file-name B20_noise0.05_FIMMnoise0.02 \
+    --hidden-dim 500 --rank 20 --alpha 0.2 --lr 0.001 --seed 1111
+
+PYTHONPATH=. CUDA_VISIBLE_DEVICES=1 python run_sbdf_cpu.py --file-dir synthetic_data_realdata --file-name B20_noise0.05_FIMMnoise0.02 \
+    --hidden-dim 500 --rank 20 --alpha 0.4 --lr 0.001 --seed 1111
+
+PYTHONPATH=. CUDA_VISIBLE_DEVICES=1 python run_sbdf_cpu.py --file-dir synthetic_data_realdata --file-name B20_noise0.05_FIMMnoise0.02 \
+    --hidden-dim 500 --rank 20 --alpha 0.6 --lr 0.001 --seed 1111
+
+PYTHONPATH=. CUDA_VISIBLE_DEVICES=1 python run_sbdf_cpu.py --file-dir synthetic_data_realdata --file-name B20_noise0.05_FIMMnoise0.02 \
+    --hidden-dim 500 --rank 20 --alpha 0.8 --lr 0.001 --seed 1111
