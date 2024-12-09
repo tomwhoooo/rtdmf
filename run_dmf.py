@@ -76,11 +76,10 @@ class param_saver(object):
             self.file = cs.file
         if not self.simulation:
             # read in original matrix
-            self.file_dir = params['file_dir']
-            self.A = np.load('./synthetic_real_data_v4/M_{}.npy'.format(args.file_name))
+            self.A = np.load('./{}/M_{}.npy'.format(params['file_dir'], args.file_name))
             B = self.A.copy()
             print('matrix shape: ', B.shape)
-            self.dropped_idx = np.load('./synthetic_real_data_v4/dropped_idx_{}.npy'.format(args.file_name))
+            self.dropped_idx = np.load('./{}/dropped_idx_{}.npy'.format(params['file_dir'], args.file_name))
             print('num of dropped index: ', len(self.dropped_idx))
             B.ravel()[self.dropped_idx] = np.nan
             self.file = B
@@ -225,15 +224,19 @@ def main():
               'simulation': False,
               'save_drop_index': True}
 
+    torch.manual_seed(args.seed)
+    torch.cuda.manual_seed(args.seed)
+
     epoch = args.epoch
-    outdir = 'synthetic_real_data_v4_{}'.format(args.file_name)
+    outdir = './{}/results_dmf_{}_seed{}'.format(params['file_dir'], args.file_name, args.seed)
 
     print('output directory: ', outdir)
-    cs = create_simulation(params)
     if not os.path.exists(outdir):
         os.makedirs(outdir)
     logfilename = os.path.join(outdir, 'log.txt')
     init_logfile(logfilename, "epoch\ttrain loss\ttestloss")
+
+    cs = create_simulation(params)
     _, _, _ = main_function(params, cs, logfilename, outdir)
 
 
