@@ -7,28 +7,26 @@ import numpy as np
 import argparse
 import numpy as np
 import pandas as pd
+import os
 
 
 parser = argparse.ArgumentParser(description='RPCA params')
-parser.add_argument('--block-size', default=50, type=int,
-                    help='block size')
-parser.add_argument('--p', default=0.05, type=float,
-                    help='p')
 parser.add_argument('--TAU', default=1.0, type=float,
                     help='parameter for RPCA (default: 1.0)')
+parser.add_argument('--file-dir', default='', type=str, metavar='PATH',
+                    help='path to load file')
+parser.add_argument('--file-name', default='', type=str, metavar='PATH',
+                    help='path to load file')
 args = parser.parse_args()
 
 
 TAU = args.TAU
-Block_size = args.block_size
-N_noise = 0.05
-p_ = args.p
 
-S_gt = np.load('./synthetic_real_data_v4/S_B{}_noise{}_p{}.npy'.format(Block_size, N_noise, p_))
-M = np.load('./synthetic_real_data_v4/M_B{}_noise{}_p{}.npy'.format(Block_size, N_noise, p_))
-not_nan_idx = np.load('./synthetic_real_data_v4/not_nan_idx_B{}_noise{}_p{}.npy'.format(Block_size, N_noise, p_))
-dropped_idx = np.load('./synthetic_real_data_v4/dropped_idx_B{}_noise{}_p{}.npy'.format(Block_size, N_noise, p_))
-row_permute_sort_index = np.load('./synthetic_real_data_v4/row_permute_sort_index_B{}_noise{}_p{}.npy'.format(Block_size, N_noise, p_))
+S_gt = np.load('./{}/S_{}.npy'.format(args.file_dir, args.file_name))
+M = np.load('./{}/M_{}.npy'.format(args.file_dir, args.file_name))
+not_nan_idx = np.load('./{}/not_nan_idx_{}.npy'.format(args.file_dir, args.file_name))
+dropped_idx = np.load('./{}/dropped_idx_{}.npy'.format(args.file_dir, args.file_name))
+row_permute_sort_index = np.load('./{}/row_permute_sort_index_{}.npy'.format(args.file_dir, args.file_name))
 
 
 Mask = np.zeros_like(M)
@@ -45,7 +43,7 @@ def get_cvx_opt_constraints_rpca(L, S, shape, M, non_dropped_idx):
     constraints = [cvx.abs(cvx.multiply(L + S - A, mask)) <= eps]
     return constraints
 
-shape = (800, 100)
+shape = M.shape
 L = cvx.Variable(shape=shape)
 S = cvx.Variable(shape=shape)
 tau = TAU / np.sqrt(max(shape))
@@ -56,5 +54,10 @@ problem = cvx.Problem(objective, constraints)
 problem.solve(verbose=True, use_indirect=False)
 print("Optimal value: ", problem.value)
 
-np.save('./cvx_rpca_realdata_v4/L_hat_cvx_rpca_B{}_noise{}_p{}_tau{}.npy'.format(Block_size, N_noise, p_, TAU), L.value)
-np.save('./cvx_rpca_realdata_v4/L_hat_cvx_rpca_S{}_noise{}_p{}_tau{}.npy'.format(Block_size, N_noise, p_, TAU), S.value)
+outdir = './{}/results_cvx_rpca_{}'.format(args.file_dir, args.file_name)
+print('output directory: ', outdir)
+if not os.path.exists(outdir):
+    os.makedirs(outdir)
+
+np.save('{}/L_hat_cvx_rpca_{}_tau{}.npy'.format(outdir, args.file_name, TAU), L.value)
+np.save('{}/S_hat_cvx_rpca_{}_tau{}.npy'.format(outdir, args.file_name, TAU), S.value)

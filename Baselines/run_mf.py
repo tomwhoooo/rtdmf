@@ -8,28 +8,24 @@ import numpy as np
 import pandas as pd
 import argparse
 from matplotlib import pyplot as plt
+import os
 
 
-parser = argparse.ArgumentParser(description='RPCA params')
-parser.add_argument('--block-size', default=50, type=int,
-                    help='block size')
-parser.add_argument('--p', default=0.05, type=float,
-                    help='p')
+parser = argparse.ArgumentParser(description='MF params')
 parser.add_argument('--EPS', default=0.1, type=float,
                     help='parameter for RPCA (default: 1.0)')
+parser.add_argument('--file-dir', default='', type=str, metavar='PATH',
+                    help='path to load file')
+parser.add_argument('--file-name', default='', type=str, metavar='PATH',
+                    help='path to load file')
 args = parser.parse_args()
 
 EPS = args.EPS
-Block_size = args.block_size
-p_ = args.p
-N_noise = 0.05
 
-S_gt = np.load('./synthetic_real_data_v4/S_B{}_noise{}_p{}.npy'.format(Block_size, N_noise, p_))
-M = np.load('./synthetic_real_data_v4/M_B{}_noise{}_p{}.npy'.format(Block_size, N_noise, p_))
-not_nan_idx = np.load('./synthetic_real_data_v4/not_nan_idx_B{}_noise{}_p{}.npy'.format(Block_size, N_noise, p_))
-dropped_idx = np.load('./synthetic_real_data_v4/dropped_idx_B{}_noise{}_p{}.npy'.format(Block_size, N_noise, p_))
-row_permute_sort_index = np.load('./synthetic_real_data_v4/row_permute_sort_index_B{}_noise{}_p{}.npy'.format(Block_size, N_noise, p_))
-
+S_gt = np.load('./{}/S_{}.npy'.format(args.file_dir, args.file_name))
+M = np.load('./{}/M_{}.npy'.format(args.file_dir, args.file_name))
+not_nan_idx = np.load('./{}/not_nan_idx_{}.npy'.format(args.file_dir, args.file_name))
+dropped_idx = np.load('./{}/dropped_idx_{}.npy'.format(args.file_dir, args.file_name))
 
 Mask = np.zeros_like(M)
 non_dropped_idx = np.setdiff1d(not_nan_idx, dropped_idx)
@@ -55,4 +51,9 @@ problem.solve(verbose=True, use_indirect=False)
 print("Optimal value: ", problem.value)
 print("L:\n", L.value)
 
-np.save('./cvx_mf_realdata_v4/L_hat_cvx_mf_B{}_noise{}_p{}_eps{}.npy'.format(Block_size, N_noise, p_, EPS), L.value)
+outdir = './{}/results_cvx_mf_{}'.format(args.file_dir, args.file_name)
+print('output directory: ', outdir)
+if not os.path.exists(outdir):
+    os.makedirs(outdir)
+
+np.save('{}/L_hat_cvx_mf_{}_eps{}.npy'.format(outdir, args.file_name, EPS), L.value)
