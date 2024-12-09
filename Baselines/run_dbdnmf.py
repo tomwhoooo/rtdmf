@@ -172,7 +172,7 @@ def main():
 
     torch.manual_seed(args.seed)
 
-    outdir = './{}/results_dbdnmf2_{}_seed{}'.format(params['file_dir'], args.file_name, args.seed)
+    outdir = './{}/results_dbdnmf2_{}_alpha{}_seed{}'.format(params['file_dir'], args.file_name, params['alpha'], args.seed)
 
     print('output directory: ', outdir)
     if not os.path.exists(outdir):
